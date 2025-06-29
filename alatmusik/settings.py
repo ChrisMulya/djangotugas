@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-9le%s#=#ruos!+p*+p!ykg^!wfj#zsrvcf+8oj8f%#npmrq$*g
 DEBUG = True
 
 # settings.py
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0' ]
 
 RAILWAY_STATIC_URL = os.environ.get('RAILWAY_STATIC_URL')
 if RAILWAY_STATIC_URL:
