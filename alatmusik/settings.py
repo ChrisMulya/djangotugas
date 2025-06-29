@@ -146,6 +146,7 @@ MEDIA_ROOT = [BASE_DIR / 'media']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+RAILWAY_STATIC_URL = os.environ.get('RAILWAY_STATIC_URL')
 if RAILWAY_HOSTNAME:
     CSRF_TRUSTED_ORIGINS = ['https://' + RAILWAY_HOSTNAME.replace("https://", "")]
 
