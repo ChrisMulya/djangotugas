@@ -4,6 +4,7 @@ from alatmusik_app import views
 from api import views   
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views 
 
 urlpatterns = [
     path('super-admin/', admin.site.urls),
