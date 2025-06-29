@@ -84,7 +84,10 @@ TEMPLATES = [
 if 'DATABASE_URL' in os.environ:
     # Gunakan database PostgreSQL di Railway
     DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600, ssl_require=False)
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
 else:
     # Gunakan SQLite di komputer lokal
