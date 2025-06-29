@@ -30,12 +30,15 @@ APPEND_SLASH = False
 
 # settings.py
 ALLOWED_HOSTS = ['*']
-
 RAILWAY_STATIC_URL = os.environ.get('RAILWAY_STATIC_URL')
 if RAILWAY_STATIC_URL:
     # Hapus https:// dari URL karena ALLOWED_HOSTS hanya butuh nama domain
     ALLOWED_HOSTS.append(RAILWAY_STATIC_URL.replace('https://',''))
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # Application definition
 
@@ -137,6 +140,8 @@ MEDIA_ROOT = [BASE_DIR / 'media']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-CSRF_TRUSTED_ORIGINS= ["http://127.0.0.1:8080"]
+if RAILWAY_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS = ['https://' + RAILWAY_HOSTNAME.replace("https://", "")]
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
