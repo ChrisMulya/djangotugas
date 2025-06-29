@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,13 @@ SECRET_KEY = 'django-insecure-9le%s#=#ruos!+p*+p!ykg^!wfj#zsrvcf+8oj8f%#npmrq$*g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# settings.py
 ALLOWED_HOSTS = []
+
+RAILWAY_STATIC_URL = os.environ.get('RAILWAY_STATIC_URL')
+if RAILWAY_STATIC_URL:
+    # Hapus https:// dari URL karena ALLOWED_HOSTS hanya butuh nama domain
+    ALLOWED_HOSTS.append(RAILWAY_STATIC_URL.replace('https://',''))
 
 
 # Application definition
