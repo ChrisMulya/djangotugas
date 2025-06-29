@@ -16,10 +16,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key-for-local-development')
 
 # DEBUG akan False di Railway (jika Anda mengatur env var), dan True di lokal.
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # Konfigurasi ALLOWED_HOSTS yang dinamis dan aman.
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','web-production-0c0f.up.railway.app']
 RAILWAY_HOSTNAME = os.environ.get('RAILWAY_STATIC_URL') 
 if RAILWAY_HOSTNAME:
     ALLOWED_HOSTS.append(RAILWAY_HOSTNAME.replace("https://", ""))
