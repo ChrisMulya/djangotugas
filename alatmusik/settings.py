@@ -26,19 +26,15 @@ SECRET_KEY = 'django-insecure-9le%s#=#ruos!+p*+p!ykg^!wfj#zsrvcf+8oj8f%#npmrq$*g
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-APPEND_SLASH = False
 
 # settings.py
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 RAILWAY_STATIC_URL = os.environ.get('RAILWAY_STATIC_URL')
 if RAILWAY_STATIC_URL:
     # Hapus https:// dari URL karena ALLOWED_HOSTS hanya butuh nama domain
     ALLOWED_HOSTS.append(RAILWAY_STATIC_URL.replace('https://',''))
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
 
 # Application definition
 
@@ -57,7 +53,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -89,17 +84,12 @@ WSGI_APPLICATION = 'alatmusik.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-if 'DATABASE_URL' in os.environ:
-    DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600, ssl_require=False) # ssl_require=False untuk Railway
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
 
 # Password validation
