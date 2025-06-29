@@ -1,5 +1,3 @@
-# api/views.py
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,15 +5,20 @@ from alatmusik_app.models import Provinsi, AlatMusik
 from .serializers import ProvinsiSerializer, AlatMusikSerializer
 
 class AlatMusikListApiView(APIView):
+
     def get(self, request, *args, **kwargs):
         alat_musik_list = AlatMusik.objects.all()
         serializer = AlatMusikSerializer(alat_musik_list, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        # PERBAIKAN: Langsung teruskan semua data dari request ke serializer
-        serializer = AlatMusikSerializer(data=request.data)
-        
+        data = {
+            'nama': request.data.get('nama'),
+            'asal_daerah': request.data.get('asal_daerah'),
+            'deskripsi': request.data.get('deskripsi'),
+            'provinsi': request.data.get('provinsi'),
+        }
+        serializer = AlatMusikSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             response = {
@@ -28,6 +31,7 @@ class AlatMusikListApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class AlatMusikDetailApiView(APIView):
+
     def get_object(self, id):
         try:
             return AlatMusik.objects.get(id=id)
@@ -38,25 +42,34 @@ class AlatMusikDetailApiView(APIView):
         alat_musik_instance = self.get_object(id)
         if not alat_musik_instance:
             return Response(
-                {"status": status.HTTP_404_NOT_FOUND, "message": "Data alat musik tidak ditemukan."},
+                {"status": status.HTTP_404_NOT_FOUND, "message": "Data alat musik tidak ditemukan.", "data": {}},
                 status=status.HTTP_404_NOT_FOUND
             )
         
         serializer = AlatMusikSerializer(alat_musik_instance)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        response = {
+            'status': status.HTTP_200_OK,
+            'message': 'Data alat musik berhasil diambil.',
+            'data': serializer.data
+        }
+        return Response(response, status=status.HTTP_200_OK)
 
     def put(self, request, id, *args, **kwargs):
         alat_musik_instance = self.get_object(id)
         if not alat_musik_instance:
             return Response(
-                {"status": status.HTTP_404_NOT_FOUND, "message": "Data alat musik tidak ditemukan."},
+                {"status": status.HTTP_404_NOT_FOUND, "message": "Data alat musik tidak ditemukan.", "data": {}},
                 status=status.HTTP_404_NOT_FOUND
             )
         
-        # PERBAIKAN: Langsung teruskan request.data untuk update
-        # 'partial=True' memungkinkan ini berfungsi sebagai PATCH juga
-        serializer = AlatMusikSerializer(instance=alat_musik_instance, data=request.data, partial=True)
+        data = {
+            'nama': request.data.get('nama'),
+            'asal_daerah': request.data.get('asal_daerah'),
+            'deskripsi': request.data.get('deskripsi'),
+            'provinsi': request.data.get('provinsi'),
+        }
         
+        serializer = AlatMusikSerializer(instance=alat_musik_instance, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             response = {
@@ -69,14 +82,13 @@ class AlatMusikDetailApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, id, *args, **kwargs):
-        # Memanggil method put yang sudah fleksibel
         return self.put(request, id, *args, **kwargs)
 
     def delete(self, request, id, *args, **kwargs):
         alat_musik_instance = self.get_object(id)
         if not alat_musik_instance:
             return Response(
-                {"status": status.HTTP_404_NOT_FOUND, "message": "Data alat musik tidak ditemukan."},
+                {"status": status.HTTP_404_NOT_FOUND, "message": "Data alat musik tidak ditemukan.", "data": {}},
                 status=status.HTTP_404_NOT_FOUND
             )
         
@@ -87,8 +99,6 @@ class AlatMusikDetailApiView(APIView):
         }
         return Response(response, status=status.HTTP_200_OK)
 
-# --- Kelas untuk Provinsi sudah benar, tidak perlu diubah ---
-
 class ProvinsiListApiView(APIView):
     def get(self, request, *args, **kwargs):
         provinsi_list = Provinsi.objects.all()
@@ -96,8 +106,8 @@ class ProvinsiListApiView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        # Kode ini sudah benar karena hanya ada satu field
-        serializer = ProvinsiSerializer(data=request.data)
+        data = {'nama': request.data.get('nama')}
+        serializer = ProvinsiSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             response = {
@@ -152,7 +162,8 @@ class ProvinsiDetailApiView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = ProvinsiSerializer(instance=provinsi_instance, data=request.data, partial=True)
+        data = {'nama': request.data.get('nama')}
+        serializer = ProvinsiSerializer(instance=provinsi_instance, data=data, partial=True)
         
         if serializer.is_valid():
             serializer.save()
