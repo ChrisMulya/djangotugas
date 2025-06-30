@@ -19,7 +19,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key-for-loca
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # Konfigurasi ALLOWED_HOSTS yang dinamis dan aman.
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','web-production-0c0f.up.railway.app']
+ALLOWED_HOSTS = ['*']
 RAILWAY_HOSTNAME = os.environ.get('RAILWAY_STATIC_URL') 
 if RAILWAY_HOSTNAME:
     ALLOWED_HOSTS.append(RAILWAY_HOSTNAME.replace("https://", ""))
@@ -83,10 +83,19 @@ TEMPLATES = [
 # ==============================================================================
 
 DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('MYSQLDATABASE'),     # -> 'railway'
+        'USER': os.environ.get('MYSQLUSER'),         # -> 'root'
+        'PASSWORD': os.environ.get('MYSQLPASSWORD'), # -> 'dn6vF...ksnaM]'
+        'HOST': os.environ.get('MYSQLHOST'),         # -> 'mysql.railway.internal'
+        'PORT': os.environ.get('MYSQLPORT'),         # -> '3306'
+    }
+}
+
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600)
     }
 
 # ==============================================================================
@@ -131,11 +140,3 @@ TIME_ZONE = 'Asia/Jakarta'
 USE_I18N = True
 USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-REST_FRAMEWORK = {
-    # Mengatur kebijakan perizinan default untuk semua view.
-    # 'AllowAny' berarti tidak ada otentikasi atau perizinan yang dibutuhkan.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ]
-}
