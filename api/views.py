@@ -13,8 +13,7 @@ class AlatMusikListApiView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        # PERBAIKAN: Langsung teruskan semua data dari request ke serializer.
-        # Ini lebih sederhana dan akan bekerja dengan serializer kompleks kita.
+        # PERBAIKAN: Langsung teruskan semua data dari request ke serializer
         serializer = AlatMusikSerializer(data=request.data)
         
         if serializer.is_valid():
@@ -54,8 +53,8 @@ class AlatMusikDetailApiView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
         
-        # PERBAIKAN: Langsung teruskan request.data untuk update.
-        # 'partial=True' memungkinkan ini berfungsi sebagai PATCH juga.
+        # PERBAIKAN: Langsung teruskan request.data untuk update
+        # 'partial=True' memungkinkan ini berfungsi sebagai PATCH juga
         serializer = AlatMusikSerializer(instance=alat_musik_instance, data=request.data, partial=True)
         
         if serializer.is_valid():
@@ -97,6 +96,7 @@ class ProvinsiListApiView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
+        # Kode ini sudah benar karena hanya ada satu field
         serializer = ProvinsiSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
