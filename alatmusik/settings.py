@@ -78,7 +78,6 @@ TEMPLATES = [
     },
 ]
 
-DEFAULT_PERMISSION_CLASSES :'rest_framework.permissions.AllowAny'
 # ==============================================================================
 # DATABASE (Fleksibel untuk Lokal dan Produksi)
 # ==============================================================================
@@ -132,3 +131,11 @@ TIME_ZONE = 'Asia/Jakarta'
 USE_I18N = True
 USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    # Mengatur kebijakan perizinan default untuk semua view.
+    # 'AllowAny' berarti tidak ada otentikasi atau perizinan yang dibutuhkan.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ]
+}
