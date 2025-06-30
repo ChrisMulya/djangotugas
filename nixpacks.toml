@@ -1,6 +1,0 @@
-# nixpacks.toml
-
-# Memberitahu Nixpacks untuk tidak menjalankan perintah apa pun
-# sebelum proses install. Ini akan mencegah 'migrate' otomatis.
-[start]
-cmd = ""
