@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'alatmusik.wsgi.application'
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://web-production-0c0f.up.railway.app/",
+    "http://web-production-0c0f.up.railway.app",
 ]
 
 # Database
